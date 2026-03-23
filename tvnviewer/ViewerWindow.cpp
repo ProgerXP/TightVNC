@@ -119,6 +119,7 @@ bool ViewerWindow::onCreate(LPCREATESTRUCT lps)
   m_toolbar.setViewAutoButtons(10, ToolBar::TB_Style_sep);
   m_toolbar.setViewAutoButtons(11, ToolBar::TB_Style_sep);
   m_toolbar.setViewAutoButtons(15, ToolBar::TB_Style_sep);
+  m_toolbar.setViewAutoButtons(17, ToolBar::TB_Style_sep);
   m_toolbar.attachToolBar(getHWnd());
   m_menu.getSystemMenu(getHWnd());
   m_menu.loadMenu();
@@ -131,6 +132,10 @@ bool ViewerWindow::onCreate(LPCREATESTRUCT lps)
     m_bToolBar = false;
   }
   m_menu.checkedMenuItem(IDS_TB_TOOLBAR, bShowToolbar);
+
+  const bool v = m_conConf->isViewOnly();
+  m_toolbar.checkButton(IDS_TB_VIEWERONLY, !v);
+  m_menu.checkedMenuItem(IDS_TB_VIEWERONLY, v);
   return true;
 }
 
@@ -403,6 +408,14 @@ void ViewerWindow::switchFullScreenMode()
   }
 }
 
+void ViewerWindow::switchViewOnlyMode()
+{
+  const bool v = !m_conConf->isViewOnly();
+  m_conConf->setViewOnly(v);
+  m_toolbar.checkButton(IDS_TB_VIEWERONLY, !v);
+  m_menu.checkedMenuItem(IDS_TB_VIEWERONLY, v);
+}
+
 void ViewerWindow::dialogConfiguration() 
 {
   m_application->postMessage(TvnViewer::WM_USER_CONFIGURATION);
@@ -667,7 +680,8 @@ int ViewerWindow::translateAccelToTB(int val)
     make_pair(ID_CONN_OPTIONS,    IDS_TB_CONNOPTIONS),
     make_pair(ID_CONN_INFO,       IDS_TB_CONNINFO), 
     make_pair(ID_SHOW_TOOLBAR,    IDS_TB_TOOLBAR),
-    make_pair(ID_FULL_SCR,        IDS_TB_FULLSCREEN), 
+    make_pair(ID_FULL_SCR,        IDS_TB_FULLSCREEN),
+    make_pair(ID_VIEWERONLY_SCR,  IDS_TB_VIEWERONLY),
     make_pair(ID_REQ_SCR_REFRESH, IDS_TB_REFRESH),
     make_pair(ID_CTRL_ALT_DEL,    IDS_TB_CTRLALTDEL),
     make_pair(ID_TRANSF_FILES,    IDS_TB_TRANSFER)
@@ -753,6 +767,9 @@ bool ViewerWindow::onCommand(WPARAM wParam, LPARAM lParam)
       return true;
     case IDS_TB_CONFIGURATION:
       dialogConfiguration();
+      return true;
+    case IDS_TB_VIEWERONLY:
+      switchViewOnlyMode();
       return true;
   }
   return false;

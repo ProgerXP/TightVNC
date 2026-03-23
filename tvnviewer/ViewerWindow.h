@@ -191,6 +191,7 @@ private:
   void dialogConnectionOptions();
   void dialogConnectionInfo();
   void switchFullScreenMode();
+  void switchViewOnlyMode();
   void dialogConfiguration();
   void adjustWindowSize();
   StringStorage formatWindowName() const;
