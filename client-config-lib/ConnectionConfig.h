@@ -199,6 +199,9 @@ protected:
 
   // View only mode (all client input are ignored)
   bool m_viewOnly;
+  DWORD m_viewOnlyStartTime = 0;
+  const DWORD m_viewOnlyEnabledDelay = 200;
+
   // Enable clipboard transfers flag
   bool m_isClipboardEnabled;
 

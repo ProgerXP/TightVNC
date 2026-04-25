@@ -217,11 +217,19 @@ void ConnectionConfig::setViewOnly(bool viewOnly)
 {
   AutoLock l(&m_cs);
   m_viewOnly = viewOnly;
+  m_viewOnlyStartTime = viewOnly ? GetTickCount() + m_viewOnlyEnabledDelay : 0;
 }
 
 bool ConnectionConfig::isViewOnly()
 {
   AutoLock l(&m_cs);
+  if (m_viewOnly && m_viewOnlyStartTime)
+  {
+    if (m_viewOnlyStartTime < GetTickCount())
+      m_viewOnlyStartTime = 0;
+    else
+      return false;
+  }
   return m_viewOnly;
 }
 
