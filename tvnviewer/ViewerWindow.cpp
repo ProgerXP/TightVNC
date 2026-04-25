@@ -414,6 +414,8 @@ void ViewerWindow::switchViewOnlyMode()
   m_conConf->setViewOnly(v);
   m_toolbar.checkButton(IDS_TB_VIEWERONLY, !v);
   m_menu.checkedMenuItem(IDS_TB_VIEWERONLY, v);
+  m_conConf->saveToStorage(&m_ccsm);
+  applySettings();
 }
 
 void ViewerWindow::dialogConfiguration() 
