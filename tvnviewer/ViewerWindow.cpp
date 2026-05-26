@@ -141,18 +141,20 @@ bool ViewerWindow::onCreate(LPCREATESTRUCT lps)
 
 void ViewerWindow::enableUserElements()
 {
-  bool isEnable = !m_conConf->isViewOnly();
+  bool isEnable = !m_conConf->isViewOnlyForUserElements();
 
   m_toolbar.enableButton(IDS_TB_ALT, isEnable);
   m_toolbar.enableButton(IDS_TB_CTRL, isEnable);
   m_toolbar.enableButton(IDS_TB_CTRLESC, isEnable);
   m_toolbar.enableButton(IDS_TB_CTRLALTDEL, isEnable);
+  m_toolbar.checkButton(IDS_TB_VIEWERONLY, isEnable);
 
   UINT enableMenu = static_cast<UINT>(!isEnable);
   m_menu.enableMenuItem(IDS_TB_CTRLALTDEL, enableMenu);
   m_menu.enableMenuItem(IDS_TB_CTRLESC, enableMenu);
   m_menu.enableMenuItem(IDS_TB_CTRL, enableMenu);
   m_menu.enableMenuItem(IDS_TB_ALT, enableMenu);
+  m_menu.checkedMenuItem(IDS_TB_VIEWERONLY, enableMenu);
 
   if (!isEnable) {
     m_menu.checkedMenuItem(IDS_TB_ALT, false);
@@ -412,8 +414,6 @@ void ViewerWindow::switchViewOnlyMode()
 {
   const bool v = !m_conConf->isViewOnly();
   m_conConf->setViewOnly(v);
-  m_toolbar.checkButton(IDS_TB_VIEWERONLY, !v);
-  m_menu.checkedMenuItem(IDS_TB_VIEWERONLY, v);
   m_conConf->saveToStorage(&m_ccsm);
   applySettings();
 }

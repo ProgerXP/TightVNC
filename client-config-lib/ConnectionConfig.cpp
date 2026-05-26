@@ -220,6 +220,12 @@ void ConnectionConfig::setViewOnly(bool viewOnly)
   m_viewOnlyStartTime = viewOnly ? GetTickCount() + m_viewOnlyEnabledDelay : 0;
 }
 
+bool ConnectionConfig::isViewOnlyForUserElements() const
+{
+  AutoLock l(&m_cs);
+  return m_viewOnly;
+}
+
 bool ConnectionConfig::isViewOnly()
 {
   AutoLock l(&m_cs);

@@ -97,6 +97,8 @@ public:
   // Sets view only flag
   void setViewOnly(bool viewOnly);
   // Returns view only flag
+  bool isViewOnlyForUserElements() const;
+  // Returns view only value respecting m_viewOnlyStartTime option
   bool isViewOnly();
 
   // Enables/disables clipboard usage
